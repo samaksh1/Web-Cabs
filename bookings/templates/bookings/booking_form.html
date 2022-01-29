@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Bookings{% endblock %}</title>
+    {% load static %}
+    <link rel="shortcut icon" type="image/png" href="{%  static 'favicon.ico' %}"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link href='https://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="{% static '/homepagestyle.css' %}"/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+</head>
+{% load crispy_forms_tags %}
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="{% url 'register:user_dashboard'%}"> Web Cabs</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'bookings:bookings_create' %}">
+            <span class="fas fa-map-marker" aria-hidden="true"></span>
+            New Booking
+            <span class="sr-only">(current)</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link"  href="{% url 'bookings:my_bookings' %}">My Bookings</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{ user.username }}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{% url 'accounts:password_change' %}">Change Password</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item " href="{% url 'register:user_logout' %}">Logout</a>
+        
+          
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+
+
+
+
+<br>
+<div class="container">
+  <div class="card">
+    <div class="card-header text-center">
+      <button type="button" class="close modal-close ml-auto" data-dismiss="modal" aria-label="Close"><a href="{% url 'register:user_dashboard' %}"><span aria-hidden="true">×</span></a></button>
+
+      <h1>New Booking</h1>
+    </div>
+    <div class="card-body">
+      <div class="container">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="container">
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ message|safe }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+        <br>
+        <form method="post">
+          {% csrf_token %}
+          <!-- {% for field in form %}
+          {{ field|as_crispy_field }}
+          {% endfor %} -->
+          <div class="row">
+            <div class="form-group col-md-6 mb-0">
+              {{form.start_position|as_crispy_field}}
+            </div>
+            <div class="form-group col-md-6 mb-0">
+              {{form.destination|as_crispy_field}}
+            </div>
+            <div class="form-group col-md-6 mb-0">
+              {{form.date|as_crispy_field}}
+            </div>
+            <div class="form-group col-md-6 mb-0">
+              {{form.time|as_crispy_field}}
+            </div>
+            <div class="form-group col-md-6 mb-0">
+              {{form.max_members|as_crispy_field}}
+            </div>
+            <div class="form-group col-md-12 mb-0">
+              {{form.description|as_crispy_field}}
+            </div>
+          </div>
+
+
+
+          {% if field.help_text %}
+          <small style="color: grey">{{ field.help_text }}</small>
+          {% endif %}
+
+          {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+          {% endfor %}
+          <div class="text-center">
+            <button type="submit" class="btn btn-info btn-lg">Create</button>
+          </div>
+          <br>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+</body>
+</html>
+

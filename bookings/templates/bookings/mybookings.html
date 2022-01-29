@@ -1,0 +1,152 @@
+{% extends 'register/base.html' %}
+
+{% block title %}
+My Bookings
+{% endblock %}
+
+{% block content %}
+
+
+<br>
+
+<div class="text-center">
+  <h1>My Booking</h1>
+</div>
+
+{% if messages %}
+{% for message in messages %}
+<div class="container">
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ message|safe }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+</div>
+{% endfor %}
+{% endif %}
+
+<br><br>
+<div class="col-md-9">
+
+  <div class="container">
+    <div class="row row-cols-4">
+      {% comment %} <div class="card-group "> {% endcomment %}
+        <!-- <div class="col-md-4"> -->
+        {% if mybooking.count == 0 %}
+          {% if memberbooking.count == 0 %}
+          <h1 class='mt-5' style="text-align:center; color:#00796b;" id='no_booking'>No Bookings</h1>
+          {% endif %}
+        {% endif %}
+        {% for booking in mybooking %}
+
+        <div class="col">
+
+          <!-- {% if user.is_member %}
+          sjfhskjhf
+          {% endif %}
+
+          {% if request.user in booking.members.all %}
+          hahahahahah
+          {% endif %} -->
+
+
+          {% if user.username == booking.creator %}
+          <div class="card text-white border-secondary mx-auto mb-5 w-100" style='background-color:rgb(23, 38, 87); '>
+            {% else %}
+            <div class="card text-white border-secondary mx-auto mb-5 w-100" style='background-color:rgb(23, 38, 87); '>
+              {% endif %}
+              <div class="card-body" style='border: 1px solid rgb(23, 38, 87) '>
+                <div class="card-title text-center">
+
+                </div>
+                <div class="card-text">
+                  <h6>From : {{booking.start_position}}</h6>
+                  <h6>To : {{booking.destination}}</h6>
+                  <h6>Date : {{booking.date|date:'d-m-Y'}}</h6>
+                  <h6>Time : {{booking.time}}</h6>
+                  <h6>Group-Admin : {{booking.creator}}</h6>
+                  <h6>No. of Members : {{booking.members.count|add:"1"}}<small style='text-muted'> /{{booking.max_members}}</small></h6>
+                                    <br>
+                  <div class="card-link">
+                    {% if user.username == booking.creator %}
+                    <a href="{% url 'bookings:bookings_update' pk=booking.pk %}" class='btn btn-warning btn-sm '>Edit</a>
+                    <a href="{% url 'bookings:bookings_delete' pk=booking.pk %}" class='btn btn-danger btn-sm '>Delete</a>
+                    {% else %}
+                              {% if booking.members.count|add:"1" < booking.max_members %}
+                              <a href="{% url 'bookings:group_join' pk=booking.pk %}" class="btn btn-success btn-sm">Join</a>
+                              {% else %}
+                              <a href="{% url 'bookings:group_join' pk=booking.pk %}" class="btn btn-success btn-sm disabled">Join</a>
+                              {% endif %}
+                              <a href="{% url 'bookings:group_leave' pk=booking.pk %}" class='btn btn-info btn-sm'>Leave</a>
+                    {% endif %}
+
+                    <a href="{% url 'bookings:group_info' pk=booking.pk %}" class='btn btn-secondary btn-sm'>Info</a>
+                                      </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {% endfor %}
+
+          <!-- <div class="col-md-4"> -->
+          {% for booking in memberbooking %}
+
+          <div class="col">
+
+            <!-- {% if user.is_member %}
+            sjfhskjhf
+            {% endif %}
+
+            {% if request.user in booking.members.all %}
+            hahahahahah
+            {% endif %} -->
+
+
+            {% if user.username == booking.creator %}
+            <div class="card text-white border-secondary mx-auto mb-5 w-100" style='background-color:rgb(23, 38, 87); '>
+              {% else %}
+              <div class="card text-white border-secondary mx-auto mb-5 w-100" style='background-color:rgb(23, 38, 87); '>
+                {% endif %}
+                <div class="card-body" style='border: 1px solid rgb(23, 38, 87) '>
+                  <div class="card-title text-center">
+
+                  </div>
+                  <div class="card-text">
+                    <h6>From : {{booking.start_position}}</h6>
+                    <h6>To : {{booking.destination}}</h6>
+                    <h6>Date : {{booking.date|date:'d-m-Y'}}</h6>
+                    <h6>Time : {{booking.time}}</h6>
+                    <h6>Group-Admin : {{booking.creator}}</h6>
+                    <h6>No. of Members : {{booking.members.count|add:"1"}}<small style='text-muted'> /{{booking.max_members}}</small></h6>
+                                        <br>
+                    <div class="card-link">
+                      {% if user.username == booking.creator %}
+                      <a href="{% url 'bookings:bookings_update' pk=booking.pk %}" class='btn btn-warning btn-sm '>Edit</a>
+                      {% endif %}
+                      {% if user.username == booking.creator %}
+                      <a href="{% url 'bookings:bookings_delete' pk=booking.pk %}" class='btn btn-secondary btn-sm '>Delete</a>
+                      {% endif %}
+                      {% if booking.members.count|add:"1" < booking.max_members %}
+                      <a href="{% url 'bookings:group_join' pk=booking.pk %}" class="btn btn-success btn-sm">Join</a>
+                      {% else %}
+                      <a href="{% url 'bookings:group_join' pk=booking.pk %}" class="btn btn-success btn-sm disabled">Join</a>
+                      {% endif %}
+                      <a href="{% url 'bookings:group_leave' pk=booking.pk %}" class='btn btn-info btn-sm'>Leave</a>
+                      <a href="{% url 'bookings:group_info' pk=booking.pk %}" class='btn btn-primary btn-sm'>Info</a>
+                                          </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+
+{% endblock %}

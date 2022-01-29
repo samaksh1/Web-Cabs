@@ -1,0 +1,39 @@
+{% extends 'register/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title%}
+Update
+{% endblock %}
+
+{% block content %}
+<br><br><br>
+<div class="container">
+  <div class="card">
+    <div class="card-header text-center">
+      <button type="button" class="close modal-close ml-auto" data-dismiss="modal" aria-label="Close"><a href="{% url 'register:user_dashboard' %}"><span aria-hidden="true">×</span></a></button>
+
+      <h1>Update</h1>
+    </div>
+    <div class="card-body">
+      <div class="container">
+        <form method="post">
+          {% csrf_token %}
+          {{ form|crispy }}
+          {% if field.help_text %}
+          <small style="color: grey">{{ field.help_text }}</small>
+          {% endif %}
+          {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+          {% endfor %}
+          <div class="text-center">
+            <button type="submit" class="btn btn-warning btn-lg">Save</button>
+          </div>
+          <br>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
